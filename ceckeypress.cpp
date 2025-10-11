@@ -271,12 +271,14 @@ int main (int argc, char *argv[])
   }
   //Set up all the keypress events
   populateKeyMapDefault();
-
+  
+  configuration.deviceTypes.Add(CEC_DEVICE_TYPE_RECORDING_DEVICE);
   g_config.Clear();
   g_callbacks.Clear();
   snprintf(g_config.strDeviceName, LIBCEC_OSD_NAME_SIZE, "MusicPi");
   g_config.clientVersion      = LIBCEC_VERSION_CURRENT;
-  g_config.bActivateSource    = 0;
+  g_config.baseDevice         = CECDEVICE_AUDIOSYSTEM;
+  g_config.bActivateSource    = 1;
   g_callbacks.keyPress        = &CecKeyPress;
   g_callbacks.commandReceived = &CecCommand;
   g_callbacks.alert           = &CecAlert;
