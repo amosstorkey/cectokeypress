@@ -268,7 +268,7 @@ int main (int argc, char *argv[])
 {
   if (signal(SIGINT, sighandler) == SIG_ERR)
   {
-    std::out<<std::endl<<"can't register sighandler"<<std::endl;
+    std::cout<<std::endl<<"can't register sighandler"<<std::endl;
     return -1;
   }
   //Set up all the keypress events
@@ -321,6 +321,7 @@ int main (int argc, char *argv[])
     cec_adapter_descriptor devices[10];
     uint8_t iDevicesFound = g_parser->DetectAdapters(devices, 10, NULL, true);
     if (iDevicesFound <= 0)
+	{
       std::cout << "autodetect ";
       std::cout << "FAILED" << std::endl;
       UnloadLibCec(g_parser);
