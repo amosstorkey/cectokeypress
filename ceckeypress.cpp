@@ -30,8 +30,6 @@
  *     http://www.pulse-eight.com/
  *     http://www.pulse-eight.net/
  */
-using namespace CEC;
-using namespace STD;
 #include "env.h"
 #include "cec.h"
 
@@ -59,6 +57,8 @@ using namespace STD;
   #include "curses/CursesControl.h"
 #endif
 #include "cecloader.h"
+using namespace CEC;
+using namespace STD;
 
 static void PrintToStdOut(const char *strFormat, ...);
 
