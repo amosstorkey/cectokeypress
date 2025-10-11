@@ -30,7 +30,8 @@
  *     http://www.pulse-eight.com/
  *     http://www.pulse-eight.net/
  */
-
+using namespace CEC;
+using namespace STD;
 #include "env.h"
 #include "cec.h"
 
@@ -57,9 +58,6 @@
 #if defined(HAVE_CURSES_API)
   #include "curses/CursesControl.h"
 #endif
-
-using namespace CEC;
-using namespace STD;
 #include "cecloader.h"
 
 static void PrintToStdOut(const char *strFormat, ...);
@@ -75,9 +73,7 @@ bool                  g_bSingleCommand(false);
 volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
-
-
-map<int, int>     keyMap;
+map<int, int>         keyMap;
 int PressKey(const string json);
 
 %int opendev;
