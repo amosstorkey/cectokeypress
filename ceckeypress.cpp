@@ -139,10 +139,10 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
 {
   {
   cec_keypress key = *keyptr;
-  cout << "CeCKeyPress" << endl;
+  std::cout << "CeCKeyPress" << std::endl;
   if (key.duration == 0)
   {
-    cout << "key " <<  key.keycode << endl;
+    std::cout << "key " <<  key.keycode << std::endl;
     int keydown = "-1";
     if (keyMap.find(key.keycode) != keyMap.end())
     {
@@ -151,7 +151,7 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
     }
    
     if (logEvents)
-      cout << "remote key code: " << key.keycode << ", keyboard output: " << json << endl;
+      std::cout << "remote key code: " << key.keycode << ", keyboard output: " << keydown << std::endl;
   }    
 }
 
