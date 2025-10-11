@@ -70,7 +70,7 @@ volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
 std::map<int, int>    keyMap;
-int PressKey(const std::string json);
+int PressKey(int keydown);
 
 //int opendev;
 //struct libevdev *keydev;
