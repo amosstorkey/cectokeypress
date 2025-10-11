@@ -43,6 +43,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <map>
 #include <linux/uinput.h>
 //#include "input-event-codes.h"
 #if defined(HAVE_CURSES_API)
