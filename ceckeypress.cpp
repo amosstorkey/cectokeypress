@@ -149,9 +149,7 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
       keydown = keyMap[key.keycode];
       PressKey(keydown);
     }
-   
-    if (logEvents)
-      std::cout << "remote key code: " << key.keycode << ", keyboard output: " << keydown << std::endl;
+    std::cout << "remote key code: " << key.keycode << ", keyboard output: " << keydown << std::endl;
   }    
 }
 
