@@ -43,18 +43,13 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <libevdev.h>
-#include <libevdev-uinput.h>
+#include <linux/uinput.h>
 #include "input-event-codes.h"
-#include "p8-platform/os.h"
-#include "p8-platform/util/StringUtils.h"
-#include "p8-platform/threads/threads.h"
 #if defined(HAVE_CURSES_API)
   #include "curses/CursesControl.h"
 #endif
 
 using namespace CEC;
-using namespace P8PLATFORM;
 
 #include "cecloader.h"
 
@@ -77,7 +72,7 @@ bool                  g_cursesEnable(false);
 CCursesControl        g_cursesControl("1", "0");
 #endif
 
-map<int, string>     virginMap;
+map<int, string>     keyMap;
 int PressKey(const string json);
 
 int opendev;
@@ -354,10 +349,10 @@ void CecCommand(void *UNUSED(cbParam), const cec_command*  commandptr)
 int PressKey(const string json)
 {
   cout << "Pressing key" <<endl;
-  libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 1);
-  libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
-  libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 0);
-  libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+  //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 1);
+  //libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+  //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 0);
+  //libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
   return 0;
 }
 
@@ -1504,18 +1499,20 @@ int main (int argc, char *argv[])
   g_parser->InitVideoStandalone();
 
   // Set up fake keyboard
-  keydev = libevdev_new();
-  libevdev_set_name(keydev, "fake keyboard device");
+  //keydev = libevdev_new();
+  //libevdev_set_name(keydev, "fake keyboard device");
 
-  libevdev_enable_event_type(dev, EV_KEY);
-  libevdev_enable_event_code(dev, EV_KEY, KEY_A, NULL);
+  //libevdev_enable_event_type(dev, EV_KEY);
+  //libevdev_enable_event_code(dev, EV_KEY, KEY_A, NULL);
 
-  opendev = libevdev_uinput_create_from_device(dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-  if (opendev != 0)
-  {
-    std::cout << "trouble making fake keyboard" << std::endl;
-    return opendev;
-  }
+  //opendev = libevdev_uinput_create_from_device(dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
+  //if (opendev != 0)
+  //{
+  //  std::cout << "trouble making fake keyboard" << std::endl;
+  //  return opendev;
+  //}
+
+  
 
   if (!g_bSingleCommand)
   {
