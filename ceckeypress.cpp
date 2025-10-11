@@ -229,7 +229,7 @@ void CecAlert(void *UNUSED(cbParam), const libcec_alert type, const libcec_param
   switch (type)
   {
   case CEC_ALERT_CONNECTION_LOST:
-	std:cout<<"Connection lost"<<std::endl;
+	std::cout<<"Connection lost"<<std::endl;
     break;
   default:
     break;
