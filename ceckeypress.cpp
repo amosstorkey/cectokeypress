@@ -70,7 +70,7 @@ volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
 std::map<int, int>    keyMap;
-int PressKey(int keydown);
+int PressKey(const int keydown);
 
 //int opendev;
 //struct libevdev *keydev;
@@ -215,7 +215,7 @@ void CecCommand(void *UNUSED(cbParam), const cec_command*  commandptr)
   }
 }
 
-int PressKey(const string json)
+int PressKey(const int keydown)
 {
   cout << "Pressing key" <<endl;
   //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 1);
