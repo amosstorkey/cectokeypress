@@ -47,10 +47,10 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <map>
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <map>
 #include <linux/uinput.h>
 //#include "input-event-codes.h"
 #if defined(HAVE_CURSES_API)
@@ -72,7 +72,7 @@ bool                  g_bSingleCommand(false);
 volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
-map<int, int>         keyMap;
+std::map<int, int>         keyMap;
 int PressKey(const std::string json);
 
 %int opendev;
