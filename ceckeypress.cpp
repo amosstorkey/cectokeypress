@@ -137,7 +137,6 @@ inline bool HexStrToInt(const std::string& data, uint8_t& value)
 
 void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
 {
-  {
   cec_keypress key = *keyptr;
   std::cout << "CeCKeyPress" << std::endl;
   if (key.duration == 0)
@@ -153,7 +152,7 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
   }    
 }
 
-void CecCommand(void *UNUSED(cbParam), const cec_command*  commandptr)
+void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
 {
   cec_command command = *commandptr;
   cout << "CeC Command" << endl;
