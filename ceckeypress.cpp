@@ -69,7 +69,7 @@ bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
 
 
-map<int, string>     keyMap;
+map<int, int>     keyMap;
 int PressKey(const string json);
 
 %int opendev;
