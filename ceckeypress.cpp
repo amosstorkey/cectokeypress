@@ -1,4 +1,4 @@
-/*
+ /*
  * This file is part of the libCEC(R) library.
  *
  * libCEC(R) is Copyright (C) 2011-2015 Pulse-Eight Limited.  All rights reserved.
@@ -42,6 +42,9 @@
 #include <sstream>
 #include <signal.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <libevdev.h>
+#include <libevdev-uinput.h>
 #include "input-event-codes.h"
 #include "p8-platform/os.h"
 #include "p8-platform/util/StringUtils.h"
@@ -73,6 +76,13 @@ ICECAdapter*          g_parser;
 bool                  g_cursesEnable(false);
 CCursesControl        g_cursesControl("1", "0");
 #endif
+
+map<int, string>     virginMap;
+int PressKey(const string json);
+
+int opendev;
+struct libevdev *keydev;
+struct libevdev_uinput *uidev;
 
 void populateKeyMapDefault()
 {
@@ -277,12 +287,78 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
     }
    
     if (logEvents)
-      cout << "keycode: " << key.keycode << ", virgin command: " << json << endl;
+      cout << "remote key code: " << key.keycode << ", keyboard output: " << json << endl;
   }    
 }
 
-void CecCommand(void *UNUSED(cbParam), const cec_command* UNUSED(command))
+void CecCommand(void *UNUSED(cbParam), const cec_command*  commandptr)
 {
+  cec_command command = *commandptr;
+  cout << "CeC Command" << endl;
+  cout << "commandissued " << command.opcode << "versus" << CEC_OPCODE_DECK_CONTROL << " option " << int(command.parameters[0]) << int(CEC_USER_CONTROL_CODE_AN_RETURN) <<endl;
+  switch (command.opcode)
+  {
+    case CEC_OPCODE_VENDOR_REMOTE_BUTTON_DOWN:
+      if (command.parameters.size ==1 &&
+           command.initiator == CECDEVICE_TV)
+        if (command.parameters[0] == CEC_USER_CONTROL_CODE_AN_RETURN)
+        {
+          string json = keyMap[CEC_USER_CONTROL_CODE_AN_RETURN];
+          PressKey(json);
+        }
+        if (command.parameters[0] == CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST)
+        {
+          string json = keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST];
+          PressKey(json);
+        }
+      cout << "button down" << endl;
+      break;
+    case CEC_OPCODE_USER_CONTROL_PRESSED:
+    if (command.initiator == CECDEVICE_TV &&
+      command.parameters.size ==1 &&
+      command.parameters[0] == CEC_USER_CONTROL_CODE_STOP)
+    {
+    string json = keyMap[CEC_USER_CONTROL_CODE_STOP];
+    PressKey(json);
+    }
+/*    case CEC_OPCODE_DECK_CONTROL:
+    if (command.initiator == CECDEVICE_TV &&
+      command.parameters.size ==1 &&
+      command.parameters[0] == CEC_DECK_CONTROL_MODE_STOP)
+    {
+    string json = keyMap[CEC_USER_CONTROL_CODE_STOP];
+    PressKey(json);
+    }
+    if (command.initiator == CECDEVICE_TV &&
+       command.parameters.size ==1 &&
+       command.parameters[0] == CEC_DECK_CONTROL_MODE_SKIP_FORWARD_WIND)
+    {
+      string json = keyMap[CEC_USER_CONTROL_CODE_PLAY];
+      PressKey(json);
+    }
+    if (command.initiator == CECDEVICE_TV &&
+      command.parameters.size ==1 &&
+      command.parameters[0] == CEC_DECK_CONTROL_MODE_SKIP_REVERSE_REWIND)
+    {
+    string json = keyMap[CEC_USER_CONTROL_CODE_PAUSE];
+    PressKey(json);
+    }
+    break;
+*/
+    default:
+    cout << "CEC Command End: Nothing Special" << endl;
+    break;
+  }
+}
+
+int PressKey(const string json)
+{
+  cout << "Pressing key" <<endl;
+  libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 1);
+  libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+  libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 0);
+  libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+  return 0;
 }
 
 int CecCommandHandler(void *UNUSED(cbParam), const cec_command* UNUSED(command))
@@ -1427,6 +1503,20 @@ int main (int argc, char *argv[])
   // init video on targets that need this
   g_parser->InitVideoStandalone();
 
+  // Set up fake keyboard
+  keydev = libevdev_new();
+  libevdev_set_name(keydev, "fake keyboard device");
+
+  libevdev_enable_event_type(dev, EV_KEY);
+  libevdev_enable_event_code(dev, EV_KEY, KEY_A, NULL);
+
+  opendev = libevdev_uinput_create_from_device(dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
+  if (opendev != 0)
+  {
+    std::cout << "trouble making fake keyboard" << std::endl;
+    return opendev;
+  }
+
   if (!g_bSingleCommand)
   {
     std::string strLog;
@@ -1520,6 +1610,7 @@ int main (int argc, char *argv[])
 
   g_parser->Close();
   UnloadLibCec(g_parser);
+  libevdev_uinput_destroy(uidev);
 
   if (g_logOutput.is_open())
     g_logOutput.close();
