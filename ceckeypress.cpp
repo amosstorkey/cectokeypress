@@ -134,17 +134,6 @@ inline bool HexStrToInt(const std::string& data, uint8_t& value)
   return false;
 }
 
-static cec_logical_address GetAddressFromInput(std::string& arguments)
-{
-  std::string strDev;
-  if (GetWord(arguments, strDev))
-  {
-      unsigned long iDev = strtoul(strDev.c_str(), NULL, 16);
-      if ((iDev >= CECDEVICE_TV) && (iDev <= CECDEVICE_BROADCAST))
-        return (cec_logical_address)iDev;
-  }
-  return CECDEVICE_UNKNOWN;
-}
 
 void CecLogMessage(void *UNUSED(cbParam), const cec_log_message* message)
 {
