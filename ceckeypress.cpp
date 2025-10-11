@@ -34,6 +34,14 @@
 #include "env.h"
 #include "cec.h"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
+#include <unistd.h>
+#include <errno.h>
+
+
 #include <cstdio>
 #include <fcntl.h>
 #include <iostream>
