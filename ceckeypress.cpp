@@ -65,12 +65,8 @@ std::string           g_strPort;
 bool                  g_bSingleCommand(false);
 volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
-CMutex                g_outputMutex;
 ICECAdapter*          g_parser;
-#if defined(HAVE_CURSES_API)
-bool                  g_cursesEnable(false);
-CCursesControl        g_cursesControl("1", "0");
-#endif
+
 
 map<int, string>     keyMap;
 int PressKey(const string json);
