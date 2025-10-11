@@ -214,7 +214,7 @@ void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
 
 int PressKey(const int keydown)
 {
-  cout << "Pressing key" <<endl;
+  std::cout << "Pressing key" <<std::endl;
   //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 1);
   //libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
   //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 0);
@@ -231,11 +231,7 @@ void CecAlert(void *UNUSED(cbParam), const libcec_alert type, const libcec_param
   switch (type)
   {
   case CEC_ALERT_CONNECTION_LOST:
-    if (!CReconnect::Get().IsRunning())
-    {
-      PrintToStdOut("Connection lost - trying to reconnect\n");
-      CReconnect::Get().CreateThread(false);
-    }
+	PrintToStdOut("Connection lost");
     break;
   default:
     break;
@@ -264,7 +260,7 @@ void CecAlert(void *UNUSED(cbParam), const libcec_alert type, const libcec_param
 
 void sighandler(int iSignal)
 {
- std::out<<std::endl<< "signal caught:" << iSignal << " - exiting" <<std::endl;
+ std::cout<<std::endl<< "signal caught:" << iSignal << " - exiting" <<std::endl;
   g_bExit = 1;
 }
 
@@ -283,7 +279,6 @@ int main (int argc, char *argv[])
   snprintf(g_config.strDeviceName, LIBCEC_OSD_NAME_SIZE, "MusicPi");
   g_config.clientVersion      = LIBCEC_VERSION_CURRENT;
   g_config.bActivateSource    = 0;
-  g_callbacks.logMessage      = &CecLogMessage;
   g_callbacks.keyPress        = &CecKeyPress;
   g_callbacks.commandReceived = &CecCommand;
   g_callbacks.alert           = &CecAlert;
@@ -292,9 +287,6 @@ int main (int argc, char *argv[])
   g_strPort                   ="";
   g_cecLogLevel               = g_cecDefaultLogLevel;
   g_config.deviceTypes.Add(CEC_DEVICE_TYPE_PLAYBACK_DEVICE);
-
-  if (!ProcessCommandLineArguments(argc, argv))
-    return 0;
 
   g_parser = LibCecInitialise(&g_config);
   if (!g_parser)
@@ -342,10 +334,10 @@ int main (int argc, char *argv[])
     }
   }
 
-  PrintToStdOut("opening a connection to the CEC adapter...");
+  std::cout<<"opening a connection to the CEC adapter..."<<std::endl;
   if (!g_parser->Open(g_strPort.c_str()))
   {
-    PrintToStdOut("unable to open the device on port %s", g_strPort.c_str());
+    std::cout<< "unable to open the device on port" << g_strPort << std::endl;
     UnloadLibCec(g_parser);
     return 1;
   } 
