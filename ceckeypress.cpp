@@ -58,7 +58,6 @@
 #endif
 #include "cecloader.h"
 using namespace CEC;
-using namespace STD;
 
 static void PrintToStdOut(const char *strFormat, ...);
 
@@ -74,7 +73,7 @@ volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
 map<int, int>         keyMap;
-int PressKey(const string json);
+int PressKey(const std::string json);
 
 %int opendev;
 %struct libevdev *keydev;
