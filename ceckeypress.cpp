@@ -155,8 +155,8 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
 void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
 {
   cec_command command = *commandptr;
-  cout << "CeC Command" << endl;
-  cout << "commandissued " << command.opcode << "versus" << CEC_OPCODE_DECK_CONTROL << " option " << int(command.parameters[0]) << int(CEC_USER_CONTROL_CODE_AN_RETURN) <<endl;
+  std::cout << "CeC Command" << std::endl;
+  std::cout << "commandissued " << command.opcode << "versus" << CEC_OPCODE_DECK_CONTROL << " option " << int(command.parameters[0]) << int(CEC_USER_CONTROL_CODE_AN_RETURN) <<std::endl;
   switch (command.opcode)
   {
     case CEC_OPCODE_VENDOR_REMOTE_BUTTON_DOWN:
@@ -164,50 +164,50 @@ void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
            command.initiator == CECDEVICE_TV)
         if (command.parameters[0] == CEC_USER_CONTROL_CODE_AN_RETURN)
         {
-          string json = keyMap[CEC_USER_CONTROL_CODE_AN_RETURN];
-          PressKey(json);
+          int keydown = keyMap[CEC_USER_CONTROL_CODE_AN_RETURN];
+          PressKey(keydown);
         }
         if (command.parameters[0] == CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST)
         {
-          string json = keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST];
-          PressKey(json);
+          int keydown = keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST];
+          PressKey(keydown);
         }
-      cout << "button down" << endl;
+      std::cout << "button down" << std::endl;
       break;
     case CEC_OPCODE_USER_CONTROL_PRESSED:
     if (command.initiator == CECDEVICE_TV &&
       command.parameters.size ==1 &&
       command.parameters[0] == CEC_USER_CONTROL_CODE_STOP)
     {
-    string json = keyMap[CEC_USER_CONTROL_CODE_STOP];
-    PressKey(json);
+    int keydown = keyMap[CEC_USER_CONTROL_CODE_STOP];
+    PressKey(keydown);
     }
 /*    case CEC_OPCODE_DECK_CONTROL:
     if (command.initiator == CECDEVICE_TV &&
       command.parameters.size ==1 &&
       command.parameters[0] == CEC_DECK_CONTROL_MODE_STOP)
     {
-    string json = keyMap[CEC_USER_CONTROL_CODE_STOP];
-    PressKey(json);
+    int keydown = keyMap[CEC_USER_CONTROL_CODE_STOP];
+    PressKey(keydown);
     }
     if (command.initiator == CECDEVICE_TV &&
        command.parameters.size ==1 &&
        command.parameters[0] == CEC_DECK_CONTROL_MODE_SKIP_FORWARD_WIND)
     {
-      string json = keyMap[CEC_USER_CONTROL_CODE_PLAY];
-      PressKey(json);
+      int keydown = keyMap[CEC_USER_CONTROL_CODE_PLAY];
+      PressKey(keydown);
     }
     if (command.initiator == CECDEVICE_TV &&
       command.parameters.size ==1 &&
       command.parameters[0] == CEC_DECK_CONTROL_MODE_SKIP_REVERSE_REWIND)
     {
-    string json = keyMap[CEC_USER_CONTROL_CODE_PAUSE];
-    PressKey(json);
+    int keydown = keyMap[CEC_USER_CONTROL_CODE_PAUSE];
+    PressKey(keydown);
     }
     break;
 */
     default:
-    cout << "CEC Command End: Nothing Special" << endl;
+    std::cout << "CEC Command End: Nothing Special" << std::endl;
     break;
   }
 }
