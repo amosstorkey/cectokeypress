@@ -53,9 +53,6 @@
 #include <stdio.h>
 #include <linux/uinput.h>
 //#include "input-event-codes.h"
-#if defined(HAVE_CURSES_API)
-  #include "curses/CursesControl.h"
-#endif
 #include "cecloader.h"
 using namespace CEC;
 
@@ -72,12 +69,12 @@ bool                  g_bSingleCommand(false);
 volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
-std::map<int, int>         keyMap;
+std::map<int, int>    keyMap;
 int PressKey(const std::string json);
 
-%int opendev;
-%struct libevdev *keydev;
-%struct libevdev_uinput *uidev;
+//int opendev;
+//struct libevdev *keydev;
+//struct libevdev_uinput *uidev;
 
 void populateKeyMapDefault()
 {
