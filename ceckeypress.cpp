@@ -78,7 +78,7 @@ int PressKey(const std::string json);
 
 void populateKeyMapDefault()
 {
-  cout << "Building Map" <<endl;
+  std::cout << "Building Map" <<std::endl;
   keyMap[CEC_USER_CONTROL_CODE_PAGE_UP] = KEY_PAGEUP;
   keyMap[CEC_USER_CONTROL_CODE_PAGE_DOWN] = KEY_PAGEDOWN;
   keyMap[CEC_USER_CONTROL_CODE_CHANNEL_UP] = KEY_HOME;
@@ -88,7 +88,7 @@ void populateKeyMapDefault()
   keyMap[CEC_USER_CONTROL_CODE_DOWN] = KEY_DOWN;
   keyMap[CEC_USER_CONTROL_CODE_UP] = KEY_UP;
   keyMap[CEC_USER_CONTROL_CODE_SELECT] = KEY_SPACE;
-  keyMap[CEC_USER_CONTROL_CODE_EXIT] = KEY_RETURN;
+  keyMap[CEC_USER_CONTROL_CODE_EXIT] = KEY_ENTER;
   keyMap[CEC_USER_CONTROL_CODE_NUMBER0] = KEY_0;
   keyMap[CEC_USER_CONTROL_CODE_NUMBER1] = KEY_1;
   keyMap[CEC_USER_CONTROL_CODE_NUMBER2] = KEY_2;
@@ -115,22 +115,6 @@ void populateKeyMapDefault()
   keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST] = KEY_L;
 }
 
-
-
-
-
-static void PrintToStdOut(const char *strFormat, ...)
-{
-  std::string strLog;
-
-  va_list argList;
-  va_start(argList, strFormat);
-  strLog = StringUtils::FormatV(strFormat, argList);
-  va_end(argList);
-
-  CLockObject lock(g_outputMutex);
-  std::cout << strLog << std::endl;
-}
 
 inline bool HexStrToInt(const std::string& data, uint8_t& value)
 {
@@ -334,7 +318,7 @@ void CecAlert(void *UNUSED(cbParam), const libcec_alert type, const libcec_param
 
 void sighandler(int iSignal)
 {
-  PrintToStdOut("signal caught: %d - exiting", iSignal);
+ std::out<<std::endl<< "signal caught:" << iSignal << " - exiting" <<std::endl;
   g_bExit = 1;
 }
 
@@ -342,7 +326,7 @@ int main (int argc, char *argv[])
 {
   if (signal(SIGINT, sighandler) == SIG_ERR)
   {
-    PrintToStdOut("can't register sighandler");
+    std::out<<std::endl<<"can't register sighandler"<<std::endl;
     return -1;
   }
   //Set up all the keypress events
@@ -419,7 +403,7 @@ int main (int argc, char *argv[])
     UnloadLibCec(g_parser);
     return 1;
   } 
-  PrintToStdOut("waiting for input");
+  std::cout << std::endl << "waiting for input" << std::endl;
 
   pause();
 
