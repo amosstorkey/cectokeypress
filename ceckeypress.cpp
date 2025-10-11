@@ -143,11 +143,11 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
   if (key.duration == 0)
   {
     cout << "key " <<  key.keycode << endl;
-    string json = "unmapped";
+    int keydown = "-1";
     if (keyMap.find(key.keycode) != keyMap.end())
     {
-      json = keyMap[key.keycode];
-      PressKey(json);
+      keydown = keyMap[key.keycode];
+      PressKey(keydown);
     }
    
     if (logEvents)
