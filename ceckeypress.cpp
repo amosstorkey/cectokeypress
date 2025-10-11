@@ -51,7 +51,7 @@
 #endif
 
 using namespace CEC;
-
+using namespace STD;
 #include "cecloader.h"
 
 static void PrintToStdOut(const char *strFormat, ...);
