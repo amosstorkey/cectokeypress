@@ -135,46 +135,6 @@ inline bool HexStrToInt(const std::string& data, uint8_t& value)
 }
 
 
-void CecLogMessage(void *UNUSED(cbParam), const cec_log_message* message)
-{
-  if ((message->level & g_cecLogLevel) == message->level)
-  {
-    std::string strLevel;
-    switch (message->level)
-    {
-    case CEC_LOG_ERROR:
-      strLevel = "ERROR:   ";
-      break;
-    case CEC_LOG_WARNING:
-      strLevel = "WARNING: ";
-      break;
-    case CEC_LOG_NOTICE:
-      strLevel = "NOTICE:  ";
-      break;
-    case CEC_LOG_TRAFFIC:
-      strLevel = "TRAFFIC: ";
-      break;
-    case CEC_LOG_DEBUG:
-      strLevel = "DEBUG:   ";
-      break;
-    default:
-      break;
-    }
-
-    std::string strFullLog;
-    strFullLog = StringUtils::Format("%s[%16lld]\t%s", strLevel.c_str(), message->time, message->message);
-    PrintToStdOut(strFullLog.c_str());
-
-    if (g_logOutput.is_open())
-    {
-      if (g_bShortLog)
-        g_logOutput << message->message << std::endl;
-      else
-        g_logOutput << strFullLog.c_str() << std::endl;
-    }
-  }
-}
-
 void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
 {
   {
