@@ -143,7 +143,7 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
   if (key.duration == 0)
   {
     std::cout << "key " <<  key.keycode << std::endl;
-    int keydown = "-1";
+    int keydown = -1;
     if (keyMap.find(key.keycode) != keyMap.end())
     {
       keydown = keyMap[key.keycode];
