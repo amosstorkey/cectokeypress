@@ -67,9 +67,13 @@ bool                  g_bSingleCommand(false);
 volatile sig_atomic_t g_bExit(0);
 bool                  g_bHardExit(false);
 ICECAdapter*          g_parser;
+int                   keyList[40];
+int                   keynumber;
 std::map<int, int>    keyMap;
 int PressKey(const int keydown);
 
+struct uinput_setup usetup;
+inf fd
 //int opendev;
 //struct libevdev *keydev;
 //struct libevdev_uinput *uidev;
@@ -77,42 +81,42 @@ int PressKey(const int keydown);
 void populateKeyMapDefault()
 {
   std::cout << "Building Map" <<std::endl;
-  keyMap[CEC_USER_CONTROL_CODE_PAGE_UP] = KEY_PAGEUP;
-  keyMap[CEC_USER_CONTROL_CODE_PAGE_DOWN] = KEY_PAGEDOWN;
-  keyMap[CEC_USER_CONTROL_CODE_CHANNEL_UP] = KEY_HOME;
-  keyMap[CEC_USER_CONTROL_CODE_CHANNEL_DOWN] = KEY_END;
-  keyMap[CEC_USER_CONTROL_CODE_LEFT] = KEY_LEFT;
-  keyMap[CEC_USER_CONTROL_CODE_RIGHT] = KEY_RIGHT;
-  keyMap[CEC_USER_CONTROL_CODE_DOWN] = KEY_DOWN;
-  keyMap[CEC_USER_CONTROL_CODE_UP] = KEY_UP;
-  keyMap[CEC_USER_CONTROL_CODE_SELECT] = KEY_SPACE;
-  keyMap[CEC_USER_CONTROL_CODE_EXIT] = KEY_ENTER;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER0] = KEY_0;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER1] = KEY_1;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER2] = KEY_2;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER3] = KEY_3;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER4] = KEY_4;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER5] = KEY_5;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER6] = KEY_6;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER7] = KEY_7;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER8] = KEY_8;
-  keyMap[CEC_USER_CONTROL_CODE_NUMBER9] = KEY_9;
-  keyMap[CEC_USER_CONTROL_CODE_RECORD] = KEY_R;
-  keyMap[CEC_USER_CONTROL_CODE_PLAY] = KEY_P;
-  keyMap[CEC_USER_CONTROL_CODE_FAST_FORWARD] = KEY_F;
-  keyMap[CEC_USER_CONTROL_CODE_REWIND] = KEY_B;
-  keyMap[CEC_USER_CONTROL_CODE_STOP] = KEY_Z;
-  keyMap[CEC_USER_CONTROL_CODE_PAUSE] = KEY_X;
-  keyMap[CEC_USER_CONTROL_CODE_ELECTRONIC_PROGRAM_GUIDE] = KEY_G;
-  keyMap[CEC_USER_CONTROL_CODE_F1_BLUE] = KEY_F1;
-  keyMap[CEC_USER_CONTROL_CODE_F2_RED] = KEY_F2;
-  keyMap[CEC_USER_CONTROL_CODE_F3_GREEN] = KEY_F3;
-  keyMap[CEC_USER_CONTROL_CODE_F4_YELLOW] = KEY_F4;
-  keyMap[CEC_USER_CONTROL_CODE_AN_RETURN] = KEY_ENTER;
-  keyMap[CEC_USER_CONTROL_CODE_PREVIOUS_CHANNEL] = KEY_K;
-  keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST] = KEY_L;
+  keyMap[CEC_USER_CONTROL_CODE_PAGE_UP] = KEY_PAGEUP; keyList[0] = KEY_PAGEUP;
+  keyMap[CEC_USER_CONTROL_CODE_PAGE_DOWN] = KEY_PAGEDOWN; keyList[1] = KEY_PAGEDOWN;
+  keyMap[CEC_USER_CONTROL_CODE_CHANNEL_UP] = KEY_HOME; keyList[2] = KEY_HOME;
+  keyMap[CEC_USER_CONTROL_CODE_CHANNEL_DOWN] = KEY_END; keyList[3] = KEY_END;
+  keyMap[CEC_USER_CONTROL_CODE_LEFT] = KEY_LEFT; keyList[4] = KEY_LEFT;
+  keyMap[CEC_USER_CONTROL_CODE_RIGHT] = KEY_RIGHT; keyList[5] = KEY_RIGHT;
+  keyMap[CEC_USER_CONTROL_CODE_DOWN] = KEY_DOWN; keyList[6] = KEY_DOWN;
+  keyMap[CEC_USER_CONTROL_CODE_UP] = KEY_UP; keyList[7] = KEY_UP;
+  keyMap[CEC_USER_CONTROL_CODE_SELECT] = KEY_SPACE; keyList[8] = KEY_SPACE;
+  keyMap[CEC_USER_CONTROL_CODE_EXIT] = KEY_ENTER; keyList[9] = KEY_ENTER;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER0] = KEY_0; keyList[10] = KEY_0;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER1] = KEY_1; keyList[11] = KEY_1;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER2] = KEY_2; keyList[12] = KEY_2;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER3] = KEY_3; keyList[13] = KEY_3;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER4] = KEY_4; keyList[14] = KEY_4;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER5] = KEY_5; keyList[15] = KEY_5;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER6] = KEY_6; keyList[16] = KEY_6;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER7] = KEY_7; keyList[17] = KEY_7;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER8] = KEY_8; keyList[18] = KEY_8;
+  keyMap[CEC_USER_CONTROL_CODE_NUMBER9] = KEY_9; keyList[19] = KEY_9;
+  keyMap[CEC_USER_CONTROL_CODE_RECORD] = KEY_R; keyList[20] = KEY_R;
+  keyMap[CEC_USER_CONTROL_CODE_PLAY] = KEY_P; keyList[21] = KEY_P;
+  keyMap[CEC_USER_CONTROL_CODE_FAST_FORWARD] = KEY_F; keyList[22] = KEY_F;
+  keyMap[CEC_USER_CONTROL_CODE_REWIND] = KEY_B; keyList[23] = KEY_B;
+  keyMap[CEC_USER_CONTROL_CODE_STOP] = KEY_Z; keyList[24] = KEY_Z;
+  keyMap[CEC_USER_CONTROL_CODE_PAUSE] = KEY_X; keyList[25] = KEY_X;
+  keyMap[CEC_USER_CONTROL_CODE_ELECTRONIC_PROGRAM_GUIDE] = KEY_G; keyList[26] = KEY_G;
+  keyMap[CEC_USER_CONTROL_CODE_F1_BLUE] = KEY_F1; keyList[27] = KEY_F1;
+  keyMap[CEC_USER_CONTROL_CODE_F2_RED] = KEY_F2; keyList[28] = KEY_F2;
+  keyMap[CEC_USER_CONTROL_CODE_F3_GREEN] = KEY_F3; keyList[29] = KEY_F3;
+  keyMap[CEC_USER_CONTROL_CODE_F4_YELLOW] = KEY_F4; keyList[30] = KEY_F4;
+  keyMap[CEC_USER_CONTROL_CODE_AN_RETURN] = KEY_ENTER; keyList[31] = KEY_ENTER;
+  keyMap[CEC_USER_CONTROL_CODE_PREVIOUS_CHANNEL] = KEY_K; keyList[32] = KEY_K;
+  keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST] = KEY_L; keyList[33] = KEY_L;
 }
-
+keynumber = 34;
 
 inline bool HexStrToInt(const std::string& data, uint8_t& value)
 {
@@ -213,12 +217,28 @@ void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
 int PressKey(const int keydown)
 {
   std::cout << "Pressing key" <<std::endl;
-  //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 1);
-  //libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
-  //libevdev_uinput_write_event(uidev, EV_KEY, KEY_A, 0);
-  //libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+ emit(fd, EV_KEY, keydown, 1);
+   emit(fd, EV_SYN, SYN_REPORT, 0);
+   emit(fd, EV_KEY, kwydown, 0);
+   emit(fd, EV_SYN, SYN_REPORT, 0);
+
   return 0;
 }
+
+void emit(int fd, int type, int code, int val)
+{
+   struct input_event ie;
+
+   ie.type = type;
+   ie.code = code;
+   ie.value = val;
+   /* timestamp values below are ignored */
+   ie.time.tv_sec = 0;
+   ie.time.tv_usec = 0;
+
+   write(fd, &ie, sizeof(ie));
+}
+
 
 int CecCommandHandler(void *UNUSED(cbParam), const cec_command* UNUSED(command))
 {
@@ -301,6 +321,25 @@ int main (int argc, char *argv[])
   g_parser->InitVideoStandalone();
 
   // Set up fake keyboard
+  int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
+   /*
+    * The ioctls below will enable the device that is about to be
+    * created, to pass key events, in this case the space key.
+    */
+   for int(ii=0;ii<keynumber;ii++)
+   {
+     ioctl(fd, UI_SET_EVBIT, EV_KEY);
+     ioctl(fd, UI_SET_KEYBIT, keylist(ii));
+   }
+   memset(&usetup, 0, sizeof(usetup));
+   usetup.id.bustype = BUS_USB;
+   usetup.id.vendor = 0x1234; /* sample vendor */
+   usetup.id.product = 0x5678; /* sample product */
+   strcpy(usetup.name, "Example device");
+
+   ioctl(fd, UI_DEV_SETUP, &usetup);
+   ioctl(fd, UI_DEV_CREATE);
+
   //keydev = libevdev_new();
   //libevdev_set_name(keydev, "fake keyboard device");
 
