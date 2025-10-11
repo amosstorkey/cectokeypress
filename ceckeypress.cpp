@@ -272,7 +272,6 @@ int main (int argc, char *argv[])
   //Set up all the keypress events
   populateKeyMapDefault();
   
-  configuration.deviceTypes.Add(CEC_DEVICE_TYPE_RECORDING_DEVICE);
   g_config.Clear();
   g_callbacks.Clear();
   snprintf(g_config.strDeviceName, LIBCEC_OSD_NAME_SIZE, "MusicPi");
