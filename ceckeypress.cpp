@@ -56,8 +56,6 @@
 #include "cecloader.h"
 using namespace CEC;
 
-static void PrintToStdOut(const char *strFormat, ...);
-
 ICECCallbacks         g_callbacks;
 libcec_configuration  g_config;
 int                   g_cecLogLevel(-1);
@@ -348,9 +346,10 @@ int main (int argc, char *argv[])
 
   g_parser->Close();
   UnloadLibCec(g_parser);
-  libevdev_uinput_destroy(uidev);
+  //libevdev_uinput_destroy(uidev);
 
   if (g_logOutput.is_open())
     g_logOutput.close();
 
   return 0;
+}
