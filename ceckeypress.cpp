@@ -44,7 +44,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <linux/uinput.h>
-#include "input-event-codes.h"
+//#include "input-event-codes.h"
 #if defined(HAVE_CURSES_API)
   #include "curses/CursesControl.h"
 #endif
