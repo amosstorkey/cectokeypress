@@ -73,7 +73,7 @@ std::map<int, int>    keyMap;
 int PressKey(const int keydown);
 
 struct uinput_setup usetup;
-inf fd
+int fd;
 //int opendev;
 //struct libevdev *keydev;
 //struct libevdev_uinput *uidev;
@@ -115,8 +115,9 @@ void populateKeyMapDefault()
   keyMap[CEC_USER_CONTROL_CODE_AN_RETURN] = KEY_ENTER; keyList[31] = KEY_ENTER;
   keyMap[CEC_USER_CONTROL_CODE_PREVIOUS_CHANNEL] = KEY_K; keyList[32] = KEY_K;
   keyMap[CEC_USER_CONTROL_CODE_AN_CHANNELS_LIST] = KEY_L; keyList[33] = KEY_L;
+  keynumber = 34;
 }
-keynumber = 34;
+
 
 inline bool HexStrToInt(const std::string& data, uint8_t& value)
 {
@@ -219,7 +220,7 @@ int PressKey(const int keydown)
   std::cout << "Pressing key" <<std::endl;
  emit(fd, EV_KEY, keydown, 1);
    emit(fd, EV_SYN, SYN_REPORT, 0);
-   emit(fd, EV_KEY, kwydown, 0);
+   emit(fd, EV_KEY, keydown, 0);
    emit(fd, EV_SYN, SYN_REPORT, 0);
 
   return 0;
@@ -326,10 +327,10 @@ int main (int argc, char *argv[])
     * The ioctls below will enable the device that is about to be
     * created, to pass key events, in this case the space key.
     */
-   for int(ii=0;ii<keynumber;ii++)
+   for (int ii=0;ii<keynumber;ii++)
    {
      ioctl(fd, UI_SET_EVBIT, EV_KEY);
-     ioctl(fd, UI_SET_KEYBIT, keylist(ii));
+     ioctl(fd, UI_SET_KEYBIT, keyList(ii));
    }
    memset(&usetup, 0, sizeof(usetup));
    usetup.id.bustype = BUS_USB;
