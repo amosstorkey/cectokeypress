@@ -71,6 +71,7 @@ int                   keyList[40];
 int                   keynumber;
 std::map<int, int>    keyMap;
 int PressKey(const int keydown);
+int                   fd;
 void emit(int fd, int type, int code, int val);
 
 //int opendev;
@@ -321,7 +322,7 @@ int main (int argc, char *argv[])
   g_parser->InitVideoStandalone();
 
   // Set up fake keyboard
-  int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
+  fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
    /*
     * The ioctls below will enable the device that is about to be
     * created, to pass key events, in this case the space key.
