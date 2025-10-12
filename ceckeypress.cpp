@@ -71,7 +71,7 @@ int                   keyList[40];
 int                   keynumber;
 std::map<int, int>    keyMap;
 int PressKey(const int keydown);
-void emit(int fd, int type, int code, int val)
+void emit(int fd, int type, int code, int val);
 
 //int opendev;
 //struct libevdev *keydev;
