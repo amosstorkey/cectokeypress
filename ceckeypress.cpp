@@ -71,7 +71,7 @@ int                   keyList[40];
 int                   keynumber;
 std::map<int, int>    keyMap;
 int PressKey(const int keydown);
-
+void emit(int fd, int type, int code, int val)
 struct uinput_setup usetup;
 int fd;
 //int opendev;
@@ -330,7 +330,7 @@ int main (int argc, char *argv[])
    for (int ii=0;ii<keynumber;ii++)
    {
      ioctl(fd, UI_SET_EVBIT, EV_KEY);
-     ioctl(fd, UI_SET_KEYBIT, keyList(ii));
+     ioctl(fd, UI_SET_KEYBIT, keyList[ii]);
    }
    memset(&usetup, 0, sizeof(usetup));
    usetup.id.bustype = BUS_USB;
