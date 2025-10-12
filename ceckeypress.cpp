@@ -306,7 +306,7 @@ int main (int argc, char *argv[])
   g_config.callbacks          = &g_callbacks;
   g_strPort                   ="";
   g_cecLogLevel               = g_cecDefaultLogLevel;
-  g_config.deviceTypes.Add(CEC_DEVICE_TYPE_PLAYBACK_DEVICE);
+  g_config.deviceTypes.Add(CEC_DEVICE_RECORDING_DEVICE);
 
   g_parser = LibCecInitialise(&g_config);
   if (!g_parser)
