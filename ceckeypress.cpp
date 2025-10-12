@@ -56,6 +56,9 @@
 #include "cecloader.h"
 using namespace CEC;
 
+bool                  aborted;
+bool                  daemonize;
+bool                  logEvents;      
 ICECCallbacks         g_callbacks;
 libcec_configuration  g_config;
 int                   g_cecLogLevel(-1);
@@ -283,6 +286,29 @@ void sighandler(int iSignal)
   g_bExit = 1;
 }
 
+
+void parseOptions(int argc, char* argv[])
+{  
+  std::cout << "parse options" << std::endl;
+  std::stringstream ss;
+  ss << argv[0];
+  ss << " [-d] (daemonize) [-l] (log keypresses) [-h] (help)";
+  std::string usage = ss.str();
+  
+  for (int i = 1; i < argc; i++)
+  {
+    if (strcmp(argv[i], "-d") == 0) 
+      daemonize = true;
+    else if (strcmp(argv[i], "-l") == 0) 
+      logEvents = true;
+    else
+    {
+      std::cout << usage << std::endl;
+      exit((strcmp(argv[i], "-h") == 0) ? 0 : 1);
+    }
+  }
+}
+
 int main (int argc, char *argv[])
 {
   if (signal(SIGINT, sighandler) == SIG_ERR)
@@ -290,6 +316,25 @@ int main (int argc, char *argv[])
     std::cout<<std::endl<<"can't register sighandler"<<std::endl;
     return -1;
   }
+  daemonize = false;
+  logEvents = false;
+  parseOptions(argc, argv);  
+  if (daemonize)
+  {
+    pid_t pid;
+    if ((pid = fork()) < 0) 
+    {
+      std::cout << "cannot fork" << std::endl;
+      return 1;
+    } 
+    else if (pid != 0) 
+    { 
+      // parent
+      exit(0);
+    }
+    setsid();
+  }
+
   //Set up all the keypress events
   populateKeyMapDefault();
   struct uinput_setup usetup;
@@ -307,6 +352,7 @@ int main (int argc, char *argv[])
   g_strPort                   ="";
   g_cecLogLevel               = g_cecDefaultLogLevel;
   g_config.deviceTypes.Add(CEC_DEVICE_TYPE_RECORDING_DEVICE);
+  
 
   g_parser = LibCecInitialise(&g_config);
   if (!g_parser)
