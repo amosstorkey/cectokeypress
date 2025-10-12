@@ -72,8 +72,7 @@ int                   keynumber;
 std::map<int, int>    keyMap;
 int PressKey(const int keydown);
 void emit(int fd, int type, int code, int val)
-struct uinput_setup usetup;
-int fd;
+
 //int opendev;
 //struct libevdev *keydev;
 //struct libevdev_uinput *uidev;
@@ -218,10 +217,10 @@ void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
 int PressKey(const int keydown)
 {
   std::cout << "Pressing key" <<std::endl;
- emit(fd, EV_KEY, keydown, 1);
-   emit(fd, EV_SYN, SYN_REPORT, 0);
-   emit(fd, EV_KEY, keydown, 0);
-   emit(fd, EV_SYN, SYN_REPORT, 0);
+  emit(fd, EV_KEY, keydown, 1);
+  emit(fd, EV_SYN, SYN_REPORT, 0);
+  emit(fd, EV_KEY, keydown, 0);
+  emit(fd, EV_SYN, SYN_REPORT, 0);
 
   return 0;
 }
@@ -292,7 +291,7 @@ int main (int argc, char *argv[])
   }
   //Set up all the keypress events
   populateKeyMapDefault();
-  
+  struct uinput_setup usetup;
   g_config.Clear();
   g_callbacks.Clear();
   snprintf(g_config.strDeviceName, LIBCEC_OSD_NAME_SIZE, "MusicPi");
