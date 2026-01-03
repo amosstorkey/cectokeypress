@@ -58,7 +58,7 @@ using namespace CEC;
 
 bool                  aborted;
 bool                  daemonize;
-bool                  logEvents;      
+bool                  logEvents;
 ICECCallbacks         g_callbacks;
 libcec_configuration  g_config;
 int                   g_cecLogLevel(-1);
@@ -155,7 +155,7 @@ void CecKeyPress(void *UNUSED(cbParam), const cec_keypress* keyptr)
       PressKey(keydown);
     }
     std::cout << "remote key code: " << key.keycode << ", keyboard output: " << keydown << std::endl;
-  }    
+  }
 }
 
 void CecCommand(void *UNUSED(cbParam), const cec_command* commandptr)
@@ -343,7 +343,7 @@ int main (int argc, char *argv[])
   snprintf(g_config.strDeviceName, LIBCEC_OSD_NAME_SIZE, "MusicPi");
   g_config.clientVersion      = LIBCEC_VERSION_CURRENT;
   g_config.baseDevice         = CECDEVICE_AUDIOSYSTEM;
-  g_config.bActivateSource    = 1;
+  g_config.bActivateSource    = 0;
   g_callbacks.keyPress        = &CecKeyPress;
   g_callbacks.commandReceived = &CecCommand;
   g_callbacks.alert           = &CecAlert;
@@ -365,8 +365,10 @@ int main (int argc, char *argv[])
   }
 
   // init video on targets that need this
-  g_parser->InitVideoStandalone();
-
+  //g_parser->InitVideoStandalone();
+  //removed line above as a test as it seems to agressively do stuff
+  //specifically want it to stop turing on TV
+  
   // Set up fake keyboard
   fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
    /*
